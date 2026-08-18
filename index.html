@@ -103,4 +103,267 @@
 
         .class-input { width: 80px; }
         .num-input { width: 70px; }
-        .name-
+        .name-input { width: 180px; }
+
+        .score-cell {
+            text-align: right;
+            background-color: #fafafa;
+            white-space: nowrap;
+        }
+
+        .score-display {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--stamp-red);
+            display: inline-block;
+            min-width: 50px;
+            text-align: center;
+        }
+
+        /* 注意事項 */
+        .exam-instructions {
+            border: 1px solid #ccc;
+            padding: 10px 15px;
+            background: #fdfdfd;
+            font-size: 0.85rem;
+            color: #444;
+            margin-bottom: 35px;
+        }
+
+        /* 問題ブロック */
+        .question-block {
+            margin-bottom: 30px;
+            position: relative;
+            padding-left: 10px;
+        }
+
+        .question-head {
+            font-size: 1.05rem;
+            line-height: 1.6;
+            margin-bottom: 12px;
+        }
+
+        .question-num {
+            font-weight: bold;
+            margin-right: 8px;
+            font-size: 1.1rem;
+        }
+
+        .answer-area {
+            margin-left: 30px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1rem;
+        }
+
+        .answer-input {
+            width: 120px;
+            height: 38px;
+            border: 1px solid #777;
+            text-align: center;
+            font-size: 1.1rem;
+            outline: none;
+            border-radius: 2px;
+        }
+
+        .mark-badge {
+            position: absolute;
+            top: -8px;
+            left: -25px;
+            font-size: 2.5rem;
+            font-weight: bold;
+            display: none;
+            z-index: 10;
+        }
+
+        .mark-badge.correct { color: var(--stamp-red); display: block; }
+        .mark-badge.incorrect { color: #4a6fa5; display: block; }
+
+        /* 提出ボタン */
+        .submit-container {
+            text-align: center;
+            margin-top: 50px;
+            padding-top: 30px;
+            border-top: 1px dashed #ccc;
+        }
+
+        .submit-btn {
+            background-color: #333;
+            color: white;
+            border: none;
+            padding: 12px 40px;
+            font-size: 1.05rem;
+            font-weight: bold;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: background-color 0.2s;
+        }
+
+        .submit-btn:hover {
+            background-color: #555;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="test-sheet">
+
+        <div class="top-meta">
+            <div>寺のなかのインテリを決めよう！</div>
+            <div>実施日：<span id="currentDate"></span></div>
+        </div>
+        
+        <div class="main-title">
+            <h1>第一回 寺テスト</h1>
+            <div class="sub-title">中学数学 ｜ 20点満点</div>
+        </div>
+        
+        <table class="info-table">
+            <tr>
+                <td style="width: 25%;">
+                    <label>年 組</label>
+                    <input type="text" class="class-input">
+                </td>
+                <td style="width: 20%;">
+                    <label>番号</label>
+                    <input type="text" class="num-input">
+                </td>
+                <td style="width: 30%;">
+                    <label>氏名</label>
+                    <input type="text" class="name-input">
+                </td>
+                <td class="score-cell" style="width: 25%;">
+                    <label>得点</label>
+                    <span class="score-display" id="scoreDisplay">__</span> / 20
+                </td>
+            </tr>
+        </table>
+
+        <div class="exam-instructions">
+            <strong>【注意】</strong><br>
+            1. 各問の回答欄に答えを入力しなさい。<br>
+            2. 記入し終えたら「提出する」ボタンを押しなさい。
+        </div>
+
+        <form id="jukuTestForm">
+
+            <div class="question-block">
+                <div class="mark-badge" id="mark_q1"></div>
+                <div class="question-head">
+                    <span class="question-num">問１</span>
+                    2x + 5 = 15 のとき、x の値を答えなさい。
+                </div>
+                <div class="answer-area">
+                    答え： <input type="text" class="answer-input" name="q1">
+                </div>
+            </div>
+
+            <div class="question-block">
+                <div class="mark-badge" id="mark_q2"></div>
+                <div class="question-head">
+                    <span class="question-num">問２</span>
+                    3(x - 2) = 12 のとき、x の値を答えなさい。
+                </div>
+                <div class="answer-area">
+                    答え： <input type="text" class="answer-input" name="q2">
+                </div>
+            </div>
+
+            <div class="question-block">
+                <div class="mark-badge" id="mark_q3"></div>
+                <div class="question-head">
+                    <span class="question-num">問３</span>
+                    x² - 9 = 0 のとき、正の解 x の値を答えなさい。
+                </div>
+                <div class="answer-area">
+                    答え： <input type="text" class="answer-input" name="q3">
+                </div>
+            </div>
+
+            <div class="question-block">
+                <div class="mark-badge" id="mark_q4"></div>
+                <div class="question-head">
+                    <span class="question-num">問４</span>
+                    底辺が 8cm、高さが 5cm の三角形の面積を求めなさい。（単位は不要）
+                </div>
+                <div class="answer-area">
+                    答え： <input type="text" class="answer-input" name="q4">
+                </div>
+            </div>
+
+            <div class="question-block">
+                <div class="mark-badge" id="mark_q5"></div>
+                <div class="question-head">
+                    <span class="question-num">問５</span>
+                    54 と 36 の最大公約数を答えなさい。
+                </div>
+                <div class="answer-area">
+                    答え： <input type="text" class="answer-input" name="q5">
+                </div>
+            </div>
+
+            <div class="submit-container">
+                <button type="button" class="submit-btn" id="submitBtn" onclick="gradeJukuTest()">
+                    <i class="fa-solid fa-check-double"></i> 提出する
+                </button>
+            </div>
+
+        </form>
+    </div>
+
+    <script>
+        // 今日の年月日を自動セット
+        const today = new Date();
+        const year = today.getFullYear();
+        const month = today.getMonth() + 1;
+        const day = today.getDate();
+        document.getElementById('currentDate').textContent = `${year}年${month}月${day}日`;
+
+        // 正解データ（各4点 × 5問 ＝ 計20点満点）
+        const CORRECT_ANSWERS = {
+            q1: "5",
+            q2: "6",
+            q3: "3",
+            q4: "20",
+            q5: "18"
+        };
+
+        function gradeJukuTest() {
+            let totalScore = 0;
+            const pointsPerQuestion = 4;
+
+            for (let i = 1; i <= 5; i++) {
+                const key = 'q' + i;
+                const userInput = document.querySelector(`input[name="${key}"]`).value.trim();
+                const isCorrect = (userInput === CORRECT_ANSWERS[key]);
+
+                if (isCorrect) {
+                    totalScore += pointsPerQuestion;
+                    setMark(`mark_${key}`, true);
+                } else {
+                    setMark(`mark_${key}`, false);
+                }
+            }
+
+            // 得点を表示
+            document.getElementById('scoreDisplay').textContent = totalScore;
+            
+            // 提出ボタンを非表示化し最上部へスクロール
+            document.getElementById('submitBtn').style.display = 'none';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function setMark(elementId, isCorrect) {
+            const mark = document.getElementById(elementId);
+            if (isCorrect) {
+                mark.textContent = '◯';
+                mark.className = 'mark-badge correct';
+            } else {
+                mark.textContent = '✕';
+                mark.className = 'mark-badge incorrect';
+            }
+        }
+    </script>
+</body>
+</html>
