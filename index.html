@@ -40,7 +40,7 @@
             background-color: var(--test-paper-bg);
             width: 100%;
             max-width: 850px;
-            padding: 40px 50px;
+            padding: 40px 30px;
             position: relative;
             box-shadow: 2px 2px 10px rgba(0,0,0,0.1);
             border: 1px solid #c0c0c0;
@@ -53,6 +53,8 @@
             font-size: 0.95rem;
             font-weight: 600;
             margin-bottom: 25px;
+            flex-wrap: wrap;
+            gap: 5px;
         }
 
         .main-title {
@@ -61,7 +63,7 @@
         }
 
         .main-title h1 {
-            font-size: 2.2rem;
+            font-size: 2rem;
             font-weight: 700;
             letter-spacing: 2px;
             margin-bottom: 5px;
@@ -82,14 +84,14 @@
 
         .info-table td {
             border: 1px solid var(--border-color);
-            padding: 10px 15px;
+            padding: 8px 12px;
             vertical-align: middle;
         }
 
         .info-table label {
-            font-size: 0.95rem;
+            font-size: 0.9rem;
             font-weight: bold;
-            margin-right: 8px;
+            margin-right: 5px;
             white-space: nowrap;
         }
 
@@ -97,14 +99,11 @@
             border: none;
             border-bottom: 1px solid #333;
             outline: none;
-            font-size: 1.1rem;
-            padding: 2px 5px;
+            font-size: 1rem;
+            padding: 2px 4px;
             background: transparent;
+            width: 70%;
         }
-
-        .class-input { width: 80px; }
-        .num-input { width: 70px; }
-        .name-input { width: 180px; }
 
         .score-cell {
             text-align: right;
@@ -113,11 +112,11 @@
         }
 
         .score-display {
-            font-size: 1.8rem;
+            font-size: 1.6rem;
             font-weight: 700;
             color: var(--stamp-red);
             display: inline-block;
-            min-width: 50px;
+            min-width: 40px;
             text-align: center;
         }
 
@@ -129,17 +128,18 @@
             font-size: 0.85rem;
             color: #444;
             margin-bottom: 35px;
+            line-height: 1.5;
         }
 
         /* 問題ブロック */
         .question-block {
             margin-bottom: 30px;
             position: relative;
-            padding-left: 10px;
+            padding-left: 20px;
         }
 
         .question-head {
-            font-size: 1.05rem;
+            font-size: 1rem;
             line-height: 1.6;
             margin-bottom: 12px;
         }
@@ -147,35 +147,36 @@
         .question-num {
             font-weight: bold;
             margin-right: 8px;
-            font-size: 1.1rem;
+            font-size: 1.05rem;
         }
 
         .answer-area {
-            margin-left: 30px;
+            margin-left: 15px;
             display: flex;
             align-items: center;
             gap: 10px;
-            font-size: 1rem;
+            font-size: 0.95rem;
         }
 
         .answer-input {
-            width: 120px;
-            height: 38px;
+            width: 110px;
+            height: 36px;
             border: 1px solid #777;
             text-align: center;
-            font-size: 1.1rem;
+            font-size: 1rem;
             outline: none;
             border-radius: 2px;
         }
 
         .mark-badge {
             position: absolute;
-            top: -8px;
-            left: -25px;
-            font-size: 2.5rem;
+            top: -5px;
+            left: -10px;
+            font-size: 2.2rem;
             font-weight: bold;
             display: none;
             z-index: 10;
+            line-height: 1;
         }
 
         .mark-badge.correct { color: var(--stamp-red); display: block; }
@@ -184,8 +185,8 @@
         /* 提出ボタン */
         .submit-container {
             text-align: center;
-            margin-top: 50px;
-            padding-top: 30px;
+            margin-top: 40px;
+            padding-top: 25px;
             border-top: 1px dashed #ccc;
         }
 
@@ -193,8 +194,8 @@
             background-color: #333;
             color: white;
             border: none;
-            padding: 12px 40px;
-            font-size: 1.05rem;
+            padding: 12px 35px;
+            font-size: 1rem;
             font-weight: bold;
             cursor: pointer;
             border-radius: 4px;
@@ -203,6 +204,50 @@
 
         .submit-btn:hover {
             background-color: #555;
+        }
+
+        /* スマホ向けレイアウト調整（画面幅600px以下） */
+        @media (max-width: 600px) {
+            body {
+                padding: 10px 5px;
+            }
+
+            .test-sheet {
+                padding: 25px 15px;
+            }
+
+            .main-title h1 {
+                font-size: 1.6rem;
+            }
+
+            .info-table td {
+                display: inline-block;
+                box-sizing: border-box;
+                padding: 8px 10px;
+            }
+
+            .info-table tr {
+                display: flex;
+                flex-wrap: wrap;
+            }
+
+            .info-table td:nth-child(1) { width: 50%; border-right: none; }
+            .info-table td:nth-child(2) { width: 50%; }
+            .info-table td:nth-child(3) { width: 60%; border-top: none; border-right: none; }
+            .info-table td:nth-child(4) { width: 40%; border-top: none; }
+
+            .info-table input[type="text"] {
+                width: 60%;
+            }
+
+            .question-block {
+                padding-left: 15px;
+            }
+
+            .mark-badge {
+                left: -12px;
+                font-size: 1.8rem;
+            }
         }
     </style>
 </head>
@@ -225,19 +270,19 @@
         <!-- 氏名・得点 記入欄 -->
         <table class="info-table">
             <tr>
-                <td style="width: 25%;">
+                <td>
                     <label>年 組</label>
-                    <input type="text" class="class-input">
+                    <input type="text">
                 </td>
-                <td style="width: 20%;">
+                <td>
                     <label>番号</label>
-                    <input type="text" class="num-input">
+                    <input type="text">
                 </td>
-                <td style="width: 30%;">
+                <td>
                     <label>氏名</label>
-                    <input type="text" class="name-input">
+                    <input type="text">
                 </td>
-                <td class="score-cell" style="width: 25%;">
+                <td class="score-cell">
                     <label>得点</label>
                     <span class="score-display" id="scoreDisplay">__</span> / 20
                 </td>
