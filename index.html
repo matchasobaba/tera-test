@@ -3,17 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>第一回 寺テスト</title>
-    <!-- Google Fonts: Noto Serif JP に統一 -->
+    <title>第一回 寺テスト (中学数学)</title>
+    <!-- Google Fonts: Noto Serif JP -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;600;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
     <style>
         :root {
             --test-paper-bg: #ffffff;
             --ink-black: #1a1a1a;
             --stamp-red: #e63946;
+            --stamp-blue: #2b5797;
+            --stamp-orange: #d97706;
             --border-color: #000000;
         }
 
@@ -40,13 +43,13 @@
             background-color: var(--test-paper-bg);
             width: 100%;
             max-width: 850px;
-            padding: 40px 30px;
+            padding: 40px 35px;
             position: relative;
-            box-shadow: 2px 2px 10px rgba(0,0,0,0.1);
+            box-shadow: 2px 2px 12px rgba(0,0,0,0.15);
             border: 1px solid #c0c0c0;
         }
 
-        /* ヘッダー構成 */
+        /* ヘッダー */
         .top-meta {
             display: flex;
             justify-content: space-between;
@@ -59,27 +62,28 @@
 
         .main-title {
             text-align: center;
-            margin-bottom: 30px;
+            margin-bottom: 25px;
         }
 
         .main-title h1 {
-            font-size: 2rem;
-            font-weight: 700;
-            letter-spacing: 2px;
+            font-size: 2.2rem;
+            font-weight: 900;
+            letter-spacing: 3px;
             margin-bottom: 5px;
         }
 
         .sub-title {
-            font-size: 0.9rem;
-            color: #555;
+            font-size: 0.95rem;
+            color: #444;
+            font-weight: 600;
         }
 
-        /* 氏名・得点 共通枠 */
+        /* 氏名・得点 記入欄 */
         .info-table {
             width: 100%;
             border-collapse: collapse;
             border: 2px solid var(--border-color);
-            margin-bottom: 30px;
+            margin-bottom: 25px;
         }
 
         .info-table td {
@@ -102,7 +106,7 @@
             font-size: 1rem;
             padding: 2px 4px;
             background: transparent;
-            width: 70%;
+            width: 65%;
         }
 
         .score-cell {
@@ -112,101 +116,170 @@
         }
 
         .score-display {
-            font-size: 1.6rem;
-            font-weight: 700;
+            font-size: 1.8rem;
+            font-weight: 900;
             color: var(--stamp-red);
             display: inline-block;
-            min-width: 40px;
+            min-width: 45px;
             text-align: center;
         }
 
         /* 注意事項 */
         .exam-instructions {
-            border: 1px solid #ccc;
-            padding: 10px 15px;
-            background: #fdfdfd;
-            font-size: 0.85rem;
-            color: #444;
+            border: 1px solid #000;
+            padding: 12px 18px;
+            background: #fafafa;
+            font-size: 0.88rem;
+            color: #222;
             margin-bottom: 35px;
-            line-height: 1.5;
+            line-height: 1.6;
         }
 
-        /* 問題ブロック */
+        /* 大問セクション */
+        .section-header {
+            font-size: 1.15rem;
+            font-weight: 700;
+            border-bottom: 2px solid #000;
+            padding-bottom: 4px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+        }
+
+        .section-pts {
+            font-size: 0.9rem;
+            font-weight: normal;
+            color: #555;
+        }
+
+        /* 各問題ブロック */
         .question-block {
             margin-bottom: 30px;
             position: relative;
-            padding-left: 20px;
+            padding-top: 5px;
         }
 
         .question-head {
-            font-size: 1rem;
-            line-height: 1.6;
+            position: relative;
+            font-size: 1.05rem;
+            line-height: 1.7;
             margin-bottom: 12px;
+            z-index: 1;
         }
 
         .question-num {
             font-weight: bold;
             margin-right: 8px;
-            font-size: 1.05rem;
+            font-size: 1.1rem;
         }
 
-        .answer-area {
-            margin-left: 15px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-size: 0.95rem;
-        }
-
-        .answer-input {
-            width: 110px;
-            height: 36px;
-            border: 1px solid #777;
-            text-align: center;
-            font-size: 1rem;
-            outline: none;
-            border-radius: 2px;
-        }
-
+        /* 問題文の上に被さる◯✕スタンプ */
         .mark-badge {
             position: absolute;
-            top: -5px;
-            left: -10px;
-            font-size: 2.2rem;
-            font-weight: bold;
+            top: -15px;
+            left: 10px;
+            font-size: 3.8rem;
+            font-weight: 900;
             display: none;
             z-index: 10;
             line-height: 1;
+            pointer-events: none;
+            opacity: 0.82;
+            transform: rotate(-10deg);
+            text-shadow: 1px 1px 0px #fff;
         }
 
-        .mark-badge.correct { color: var(--stamp-red); display: block; }
-        .mark-badge.incorrect { color: #4a6fa5; display: block; }
+        .mark-badge.correct {
+            color: var(--stamp-red);
+            display: block;
+        }
+
+        .mark-badge.incorrect {
+            color: var(--stamp-blue);
+            display: block;
+        }
+
+        .mark-badge.partial {
+            color: var(--stamp-orange);
+            display: block;
+            font-size: 2.5rem;
+            top: -10px;
+            border: 3px solid var(--stamp-orange);
+            border-radius: 50%;
+            padding: 2px 10px;
+            background: rgba(255, 255, 255, 0.85);
+        }
+
+        /* 解答エリア */
+        .answer-area {
+            margin-left: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .answer-input {
+            width: 180px;
+            height: 38px;
+            border: 1px solid #555;
+            text-align: center;
+            font-size: 1.1rem;
+            outline: none;
+            border-radius: 2px;
+            background: #fff;
+        }
+
+        .answer-textarea {
+            width: 100%;
+            max-width: 500px;
+            height: 90px;
+            border: 1px solid #555;
+            padding: 8px;
+            font-size: 1rem;
+            outline: none;
+            border-radius: 2px;
+            resize: vertical;
+        }
+
+        .sub-note {
+            font-size: 0.85rem;
+            color: #666;
+            margin-top: 4px;
+        }
 
         /* 提出ボタン */
         .submit-container {
             text-align: center;
-            margin-top: 40px;
+            margin-top: 45px;
             padding-top: 25px;
-            border-top: 1px dashed #ccc;
+            border-top: 1px dashed #aaa;
         }
 
         .submit-btn {
-            background-color: #333;
+            background-color: #1a1a1a;
             color: white;
             border: none;
-            padding: 12px 35px;
-            font-size: 1rem;
+            padding: 14px 45px;
+            font-size: 1.1rem;
             font-weight: bold;
             cursor: pointer;
             border-radius: 4px;
-            transition: background-color 0.2s;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
         }
 
         .submit-btn:hover {
-            background-color: #555;
+            background-color: #333;
+            transform: translateY(-1px);
         }
 
-        /* スマホ向けレイアウト調整（画面幅600px以下） */
+        /* スマホ向けレスポンシブ表示 */
         @media (max-width: 600px) {
             body {
                 padding: 10px 5px;
@@ -217,13 +290,7 @@
             }
 
             .main-title h1 {
-                font-size: 1.6rem;
-            }
-
-            .info-table td {
-                display: inline-block;
-                box-sizing: border-box;
-                padding: 8px 10px;
+                font-size: 1.7rem;
             }
 
             .info-table tr {
@@ -231,22 +298,29 @@
                 flex-wrap: wrap;
             }
 
+            .info-table td {
+                display: inline-block;
+                box-sizing: border-box;
+                padding: 6px 8px;
+            }
+
             .info-table td:nth-child(1) { width: 50%; border-right: none; }
             .info-table td:nth-child(2) { width: 50%; }
             .info-table td:nth-child(3) { width: 60%; border-top: none; border-right: none; }
             .info-table td:nth-child(4) { width: 40%; border-top: none; }
 
-            .info-table input[type="text"] {
-                width: 60%;
-            }
-
-            .question-block {
-                padding-left: 15px;
-            }
-
             .mark-badge {
-                left: -12px;
-                font-size: 1.8rem;
+                font-size: 3rem;
+                left: 5px;
+                top: -12px;
+            }
+
+            .answer-area {
+                margin-left: 5px;
+            }
+
+            .answer-input {
+                width: 140px;
             }
         }
     </style>
@@ -255,13 +329,11 @@
 
     <div class="test-sheet">
 
-        <!-- 左上＆右上 -->
         <div class="top-meta">
             <div>寺のなかのインテリを決めよう！</div>
             <div>実施日：<span id="currentDate"></span></div>
         </div>
         
-        <!-- 中央タイトル -->
         <div class="main-title">
             <h1>第一回 寺テスト</h1>
             <div class="sub-title">中学数学 ｜ 20点満点</div>
@@ -289,77 +361,124 @@
             </tr>
         </table>
 
+        <!-- 注意事項 -->
         <div class="exam-instructions">
-            <strong>【注意】</strong><br>
-            1. 各問の回答欄に答えを入力しなさい。<br>
-            2. 記入し終えたら「提出する」ボタンを押しなさい。
+            <strong>【注意事項】</strong><br>
+            1. 解答欄に必要な数値や式を入力しなさい。<br>
+            2. 大問4については途中の考え方や式も評価対象（部分点あり）となります。<br>
+            3. 記入が終わったら、最下部の「提出する」ボタンを押しなさい。
         </div>
 
         <form id="jukuTestForm">
 
-            <!-- 問1 -->
+            <div class="section-header">
+                <span>大問１【計算問題】</span>
+                <span class="section-pts">（各2点 × 3問 ＝ 計6点）</span>
+            </div>
+
+            <!-- 問1-1 -->
             <div class="question-block">
-                <div class="mark-badge" id="mark_q1"></div>
+                <div class="mark-badge" id="mark_q1_1"></div>
                 <div class="question-head">
-                    <span class="question-num">問１</span>
-                    2x + 5 = 15 のとき、x の値を求めなさい。
+                    <span class="question-num">(1)</span>
+                    7 - 3 × (-2) の値を求めなさい。
                 </div>
                 <div class="answer-area">
-                    答え： <input type="text" class="answer-input" name="q1">
+                    答え： <input type="text" class="answer-input" name="q1_1">
                 </div>
             </div>
 
-            <!-- 問2 -->
+            <!-- 問1-2 -->
             <div class="question-block">
-                <div class="mark-badge" id="mark_q2"></div>
+                <div class="mark-badge" id="mark_q1_2"></div>
                 <div class="question-head">
-                    <span class="question-num">問２</span>
-                    3(x - 2) = 12 のとき、x の値を求めなさい。
+                    <span class="question-num">(2)</span>
+                    -4/3 × 6/5 の計算結果を求めなさい。
                 </div>
                 <div class="answer-area">
-                    答え： <input type="text" class="answer-input" name="q2">
+                    答え： <input type="text" class="answer-input" name="q1_2" placeholder="例: -8/5">
                 </div>
+            </div>
+
+            <!-- 問1-3 -->
+            <div class="question-block">
+                <div class="mark-badge" id="mark_q1_3"></div>
+                <div class="question-head">
+                    <span class="question-num">(3)</span>
+                    2(3x - 4) - 5(x - 1) を計算して簡単にしなさい。
+                </div>
+                <div class="answer-area">
+                    答え： <input type="text" class="answer-input" name="q1_3" placeholder="例: x-3">
+                </div>
+            </div>
+
+            <div class="section-header" style="margin-top: 40px;">
+                <span>大問２【平方根】</span>
+                <span class="section-pts">（各3点 × 2問 ＝ 計6点）</span>
+            </div>
+
+            <!-- 問2-1 -->
+            <div class="question-block">
+                <div class="mark-badge" id="mark_q2_1"></div>
+                <div class="question-head">
+                    <span class="question-num">(1)</span>
+                    √12 + √27 を計算して簡単にしなさい。
+                </div>
+                <div class="answer-area">
+                    答え： <input type="text" class="answer-input" name="q2_1" placeholder="例: 5√3">
+                </div>
+            </div>
+
+            <!-- 問2-2 -->
+            <div class="question-block">
+                <div class="mark-badge" id="mark_q2_2"></div>
+                <div class="question-head">
+                    <span class="question-num">(2)</span>
+                    √3(√21 - √3) を展開して計算しなさい。
+                </div>
+                <div class="answer-area">
+                    答え： <input type="text" class="answer-input" name="q2_2" placeholder="例: 3√7-3">
+                </div>
+            </div>
+
+            <div class="section-header" style="margin-top: 40px;">
+                <span>大問３【連立方程式の応用】</span>
+                <span class="section-pts">（計3点）</span>
             </div>
 
             <!-- 問3 -->
             <div class="question-block">
                 <div class="mark-badge" id="mark_q3"></div>
                 <div class="question-head">
-                    <span class="question-num">問３</span>
-                    x² - 9 = 0 のとき、正の解 x の値を求めなさい。
+                    <span class="question-num">問</span>
+                    ある中学校の昨年の全校生徒数は560人でした。今年は男子が5%増加し、女子が3%減少したため、全体で生徒数が640人になりました。昨年の男子の人数を求めなさい。
                 </div>
                 <div class="answer-area">
-                    答え： <input type="text" class="answer-input" name="q3">
+                    答え： <input type="text" class="answer-input" name="q3" style="width:140px;"> 人
                 </div>
+            </div>
+
+            <div class="section-header" style="margin-top: 40px;">
+                <span>大問４【三平方の定理・応用】</span>
+                <span class="section-pts">（計5点 ｜ 途中の考え方にも部分点あり）</span>
             </div>
 
             <!-- 問4 -->
             <div class="question-block">
                 <div class="mark-badge" id="mark_q4"></div>
                 <div class="question-head">
-                    <span class="question-num">問４</span>
-                    底辺が 8cm、高さが 5cm の三角形の面積を求めなさい。（単位は不要）
+                    <span class="question-num">問</span>
+                    斜辺の長さが 7cm である直角二等辺三角形があります。この直角二等辺三角形の1辺の長さを求めなさい。（考え方や途中式も含めて入力しなさい）
                 </div>
                 <div class="answer-area">
-                    答え： <input type="text" class="answer-input" name="q4">
-                </div>
-            </div>
-
-            <!-- 問5 -->
-            <div class="question-block">
-                <div class="mark-badge" id="mark_q5"></div>
-                <div class="question-head">
-                    <span class="question-num">問５</span>
-                    54 と 36 の最大公約数を求めなさい。
-                </div>
-                <div class="answer-area">
-                    答え： <input type="text" class="answer-input" name="q5">
+                    <textarea class="answer-textarea" name="q4" placeholder="途中式や考え方、最終解答を入力..."></textarea>
+                    <div class="sub-note">※途中式・考え方に応じて最大5点まで加点されます。</div>
                 </div>
             </div>
 
             <div class="submit-container">
                 <button type="button" class="submit-btn" id="submitBtn" onclick="gradeJukuTest()">
-                    <i class="fa-solid fa-check-double"></i> 提出する
+                    提出する <i class="fa-solid fa-arrow-right"></i>
                 </button>
             </div>
 
@@ -374,45 +493,128 @@
         const day = today.getDate();
         document.getElementById('currentDate').textContent = `${year}年${month}月${day}日`;
 
-        // 正解データ（各4点 × 5問 ＝ 計20点満点）
-        const CORRECT_ANSWERS = {
-            q1: "5",
-            q2: "6",
-            q3: "3",
-            q4: "20",
-            q5: "18"
-        };
+        // 入力文字の表記ゆれ吸収関数（全角数字・記号の半角化、スペース除去）
+        function normalizeText(str) {
+            if (!str) return "";
+            return str
+                .replace(/[Ａ-Ｚａ-ｚ０-９]/g, function(s) {
+                    return String.fromCharCode(s.charCodeAt(0) - 0xFEE0);
+                })
+                .replace(/\s+/g, '')
+                .toLowerCase();
+        }
 
         function gradeJukuTest() {
             let totalScore = 0;
-            const pointsPerQuestion = 4;
 
-            for (let i = 1; i <= 5; i++) {
-                const key = 'q' + i;
-                const userInput = document.querySelector(`input[name="${key}"]`).value.trim();
-                const isCorrect = (userInput === CORRECT_ANSWERS[key]);
+            // --- 大問1 採点 (各2点 × 3問 ＝ 6点) ---
+            const ans1_1 = normalizeText(document.querySelector('input[name="q1_1"]').value);
+            if (ans1_1 === "13") {
+                totalScore += 2;
+                setMark('mark_q1_1', 'correct');
+            } else {
+                setMark('mark_q1_1', 'incorrect');
+            }
 
-                if (isCorrect) {
-                    totalScore += pointsPerQuestion;
-                    setMark(`mark_${key}`, true);
-                } else {
-                    setMark(`mark_${key}`, false);
+            const ans1_2 = normalizeText(document.querySelector('input[name="q1_2"]').value);
+            if (ans1_2 === "-8/5" || ans1_2 === "-1.6") {
+                totalScore += 2;
+                setMark('mark_q1_2', 'correct');
+            } else {
+                setMark('mark_q1_2', 'incorrect');
+            }
+
+            const ans1_3 = normalizeText(document.querySelector('input[name="q1_3"]').value);
+            if (ans1_3 === "x-3" || ans1_3 === "1x-3") {
+                totalScore += 2;
+                setMark('mark_q1_3', 'correct');
+            } else {
+                setMark('mark_q1_3', 'incorrect');
+            }
+
+            // --- 大問2 採点 (各3点 × 2問 ＝ 6点) ---
+            const ans2_1 = normalizeText(document.querySelector('input[name="q2_1"]').value);
+            if (ans2_1 === "5√3" || ans2_1 === "5root3" || ans2_1 === "5r3") {
+                totalScore += 3;
+                setMark('mark_q2_1', 'correct');
+            } else {
+                setMark('mark_q2_1', 'incorrect');
+            }
+
+            const ans2_2 = normalizeText(document.querySelector('input[name="q2_2"]').value);
+            if (ans2_2 === "3√7-3" || ans2_2 === "3root7-3" || ans2_2 === "-3+3√7") {
+                totalScore += 3;
+                setMark('mark_q2_2', 'correct');
+            } else {
+                setMark('mark_q2_2', 'incorrect');
+            }
+
+            // --- 大問3 採点 (3点) ---
+            const ans3 = normalizeText(document.querySelector('input[name="q3"]').value);
+            if (ans3 === "300" || ans3 === "300人") {
+                totalScore += 3;
+                setMark('mark_q3', 'correct');
+            } else {
+                setMark('mark_q3', 'incorrect');
+            }
+
+            // --- 大問4 部分点付き採点 (最大5点) ---
+            // 条件：
+            // 1. なにか書いてあるだけで 1点
+            // 2. 「7^2」や「7²」や「49」まで到達していれば 2点
+            // 3. 最終的な正解（7√2/2 や 7/√2 など）に到達していれば 5点満点
+            const rawQ4 = document.querySelector('textarea[name="q4"]').value;
+            const normQ4 = normalizeText(rawQ4);
+
+            let scoreQ4 = 0;
+            if (normQ4.length > 0) {
+                scoreQ4 = 1; // 何か書いてある
+
+                // 7^2 や 7² や 49 の思考過程が含まれているかチェック
+                if (normQ4.includes("7^2") || normQ4.includes("7²") || normQ4.includes("49")) {
+                    scoreQ4 = 2;
+                }
+
+                // 最終的な正解チェック (例: 7√2/2, 7/route2, 3.5√2 など)
+                if (
+                    normQ4.includes("7√2/2") || 
+                    normQ4.includes("7/[38;5;1m√2[0m") || 
+                    normQ4.includes("7/root2") || 
+                    normQ4.includes("7√2÷2") ||
+                    normQ4.includes("3.5√2") ||
+                    normQ4.includes("7/sqrt(2)")
+                ) {
+                    scoreQ4 = 5;
                 }
             }
 
-            // 得点を表示
+            totalScore += scoreQ4;
+
+            if (scoreQ4 === 5) {
+                setMark('mark_q4', 'correct');
+            } else if (scoreQ4 > 0) {
+                setMark('mark_q4', 'partial', scoreQ4 + '点');
+            } else {
+                setMark('mark_q4', 'incorrect');
+            }
+
+            // 得点を画面に更新表示
             document.getElementById('scoreDisplay').textContent = totalScore;
-            
-            // 提出ボタンを非表示化し最上部へスクロール
+
+            // 提出ボタン非表示化＆画面上部へスクロール
             document.getElementById('submitBtn').style.display = 'none';
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        function setMark(elementId, isCorrect) {
+        // マーク（◯ / ✕ / △）セット関数
+        function setMark(elementId, status, label = '') {
             const mark = document.getElementById(elementId);
-            if (isCorrect) {
+            if (status === 'correct') {
                 mark.textContent = '◯';
                 mark.className = 'mark-badge correct';
+            } else if (status === 'partial') {
+                mark.textContent = '△ (' + label + ')';
+                mark.className = 'mark-badge partial';
             } else {
                 mark.textContent = '✕';
                 mark.className = 'mark-badge incorrect';
