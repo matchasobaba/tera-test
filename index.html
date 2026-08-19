@@ -499,88 +499,167 @@
             return normalizeAnswer(input).includes(unit);
         }
 
+        function normalizeMath(input) {
+            return normalizeAnswer(input)
+                .toLowerCase()
+                .replace(/[−－–—]/g, '-')
+                .replace(/[×✕・]/g, '*')
+                .replace(/÷/g, '/')
+                .replace(/[（]/g, '(')
+                .replace(/[）]/g, ')')
+                .replace(/√/g, '√');
+        }
+
+        function containsAny(input, patterns) {
+            const n = normalizeMath(input);
+            return patterns.some(p => n.includes(normalizeMath(p)));
+        }
+
+        function containsAll(input, patterns) {
+            const n = normalizeMath(input);
+            return patterns.every(p => n.includes(normalizeMath(p)));
+        }
+
+        function setScoredMark(markId, score, maxScore) {
+            if (score === maxScore) setMark(markId, 'correct', '◯');
+            else if (score > 0) setMark(markId, 'partial', '△');
+            else setMark(markId, 'incorrect', '✕');
+        }
+
         function gradeJukuTest() {
             let totalScore = 0;
 
-            // 各フィールドの値を取得する関数
+            // 各フィールドの値を取得
             const getAns = (name) => {
                 const el = document.querySelector(`input[name="ans_${name}"]`);
                 return el ? el.value : "";
             };
-            const getProc = (name) => document.querySelector(`textarea[name="process_${name}"]`).value;
+            const getProc = (name) => {
+                const el = document.querySelector(`textarea[name="process_${name}"]`);
+                return el ? el.value : "";
+            };
 
-            // Q1 (各2点) - 「最終的な答え」欄のみで正誤判定
-            if (checkAnswer(getAns('q1_1'), ["13"])) { totalScore += 2; setMark('mark_q1_1', 'correct', '◯'); } else { setMark('mark_q1_1', 'incorrect', '✕'); }
-            if (checkAnswer(getAns('q1_2'), ["-8/5"]) || checkAnswer(getAns('q1_2'), ["-1.6"])) { totalScore += 2; setMark('mark_q1_2', 'correct', '◯'); } else { setMark('mark_q1_2', 'incorrect', '✕'); }
-            if (checkAnswer(getAns('q1_3'), ["x-3"])) { totalScore += 2; setMark('mark_q1_3', 'correct', '◯'); } else { setMark('mark_q1_3', 'incorrect', '✕'); }
+            // ================= 大問1：各2点（途中式1点＋答え1点） =================
+            // (1) 7 − 3 × (−2) = 13
+            let q1_1Score = 0;
+            const q1_1Proc = getProc('q1_1');
+            if (
+                containsAny(q1_1Proc, ['3*(-2)=-6', '3*-2=-6', '-3*(-2)=6', '7-(-6)', '7+6']) ||
+                (containsAny(q1_1Proc, ['-6']) && containsAny(q1_1Proc, ['3*(-2)', '3*-2']))
+            ) q1_1Score += 1;
+            if (normalizeMath(getAns('q1_1')) === '13') q1_1Score += 1;
+            totalScore += q1_1Score;
+            setScoredMark('mark_q1_1', q1_1Score, 2);
 
-            // Q2 (各2点)
-            if (checkAnswer(getAns('q2_1'), ["4√3"]) || checkAnswer(getAns('q2_1'), ["4r3"])) { totalScore += 2; setMark('mark_q2_1', 'correct', '◯'); } else { setMark('mark_q2_1', 'incorrect', '✕'); }
-            if (checkAnswer(getAns('q2_2'), ["1/3"])) { totalScore += 2; setMark('mark_q2_2', 'correct', '◯'); } else { setMark('mark_q2_2', 'incorrect', '✕'); }
-            if (checkAnswer(getAns('q2_3'), ["24"]) && hasUnit(getAns('q2_3'), "個")) {
-                totalScore += 2; setMark('mark_q2_3', 'correct', '◯');
-            } else if (checkAnswer(getAns('q2_3'), ["24"])) {
-                totalScore += 1; setMark('mark_q2_3', 'partial', '△');
-            } else {
-                setMark('mark_q2_3', 'incorrect', '✕');
-            }
+            // (2) −4/3 × 6/5 = −8/5
+            let q1_2Score = 0;
+            const q1_2Proc = getProc('q1_2');
+            if (
+                containsAny(q1_2Proc, ['-24/15', '(-4*6)/(3*5)', '-4*6/3*5', '-8/5']) &&
+                containsAny(q1_2Proc, ['-24/15', '(-4*6)/(3*5)', '-4*6', '6/5', '-4/3'])
+            ) q1_2Score += 1;
+            if (['-8/5', '-1.6'].includes(normalizeMath(getAns('q1_2')))) q1_2Score += 1;
+            totalScore += q1_2Score;
+            setScoredMark('mark_q1_2', q1_2Score, 2);
 
-            // Q3 (各1点)
-            // (1) は途中式欄そのものを解答として採点。2本の式が両方そろって正解。
+            // (3) 2(3x − 4) − 5(x − 1) = x − 3
+            let q1_3Score = 0;
+            const q1_3Proc = getProc('q1_3');
+            if (
+                containsAny(q1_3Proc, ['6x-8-5x+5', '6x-8-(5x-5)', '6x-8-5x+5=x-3']) ||
+                (containsAll(q1_3Proc, ['6x', '-8', '-5x', '+5']))
+            ) q1_3Score += 1;
+            if (normalizeMath(getAns('q1_3')) === 'x-3') q1_3Score += 1;
+            totalScore += q1_3Score;
+            setScoredMark('mark_q1_3', q1_3Score, 2);
+
+            // ================= 大問2：各2点（途中式1点＋答え1点） =================
+            // (1) √12 ＋ √27 − √3 = 4√3
+            let q2_1Score = 0;
+            const q2_1Proc = getProc('q2_1');
+            if (
+                containsAll(q2_1Proc, ['2√3', '3√3']) ||
+                containsAny(q2_1Proc, ['2√3+3√3-√3', '(2+3-1)√3'])
+            ) q2_1Score += 1;
+            if (['4√3', '4r3'].includes(normalizeMath(getAns('q2_1')))) q2_1Score += 1;
+            totalScore += q2_1Score;
+            setScoredMark('mark_q2_1', q2_1Score, 2);
+
+            // (2) 3の倍数は3,6 → 2/6 = 1/3
+            let q2_2Score = 0;
+            const q2_2Proc = getProc('q2_2');
+            if (
+                containsAny(q2_2Proc, ['2/6', '2÷6', '3,6', '3と6', '3・6']) ||
+                (containsAll(q2_2Proc, ['3', '6']) && containsAny(q2_2Proc, ['1/3', '2/6']))
+            ) q2_2Score += 1;
+            if (normalizeMath(getAns('q2_2')) === '1/3') q2_2Score += 1;
+            totalScore += q2_2Score;
+            setScoredMark('mark_q2_2', q2_2Score, 2);
+
+            // (3) 条件を満たす3個の組は4通り、各6通り → 24個
+            let q2_3Score = 0;
+            const q2_3Proc = getProc('q2_3');
+            if (
+                containsAny(q2_3Proc, ['4*6', '6*4', '4×6', '6×4', '6+6+6+6']) ||
+                (containsAll(q2_3Proc, ['123', '135', '234', '345'])) ||
+                (containsAny(q2_3Proc, ['4通り', '4組']) && containsAny(q2_3Proc, ['6通り', '3!']))
+            ) q2_3Score += 1;
+            const q2_3Ans = getAns('q2_3');
+            if (checkAnswer(q2_3Ans, ['24']) && hasUnit(q2_3Ans, '個')) q2_3Score += 1;
+            totalScore += q2_3Score;
+            setScoredMark('mark_q2_3', q2_3Score, 2);
+
+            // ================= 大問3：各1点（完全解答のみ） =================
+            // (1) 連立方程式2本がそろって正解で1点
             const q3_1Proc = getProc('q3_1');
-            if (checkAnswer(q3_1Proc, ["3x", "2y", "560"]) && checkAnswer(q3_1Proc, ["2x", "4y", "640"])) {
-                totalScore += 1; setMark('mark_q3_1', 'correct', '◯');
-            } else {
-                setMark('mark_q3_1', 'incorrect', '✕');
-            }
+            const q3_1Correct =
+                checkAnswer(q3_1Proc, ['3x', '2y', '560']) &&
+                checkAnswer(q3_1Proc, ['2x', '4y', '640']);
+            if (q3_1Correct) totalScore += 1;
+            setScoredMark('mark_q3_1', q3_1Correct ? 1 : 0, 1);
 
-            // (2) 円まで受験者自身に書かせる。
+            // (2) ノート120円・ペン100円。数値と単位まで完全解答で1点
             const q3_2Ans = getAns('q3_2');
-            if (checkAnswer(q3_2Ans, ["120", "100"]) && hasUnit(q3_2Ans, "円")) {
-                totalScore += 1; setMark('mark_q3_2', 'correct', '◯');
-            } else {
-                setMark('mark_q3_2', 'incorrect', '✕');
-            }
+            const q3_2Correct = checkAnswer(q3_2Ans, ['120', '100']) && hasUnit(q3_2Ans, '円');
+            if (q3_2Correct) totalScore += 1;
+            setScoredMark('mark_q3_2', q3_2Correct ? 1 : 0, 1);
 
-            // (3) 単位も採点対象。
+            // (3) 900円まで完全解答で1点
             const q3_3Ans = getAns('q3_3');
-            if (checkAnswer(q3_3Ans, ["900"]) && hasUnit(q3_3Ans, "円")) {
-                totalScore += 1; setMark('mark_q3_3', 'correct', '◯');
-            } else {
-                setMark('mark_q3_3', 'incorrect', '✕');
+            const q3_3Correct = checkAnswer(q3_3Ans, ['900']) && hasUnit(q3_3Ans, '円');
+            if (q3_3Correct) totalScore += 1;
+            setScoredMark('mark_q3_3', q3_3Correct ? 1 : 0, 1);
+
+            // ================= 大問4：5点（1 + 1 + 3） =================
+            const q4Ans = getAns('q4');
+            const q4Proc = getProc('q4');
+            let q4Score = 0;
+
+            // ① 途中式または答えに何か書いてあれば1点
+            if (q4Ans.trim() !== '' || q4Proc.trim() !== '') {
+                q4Score += 1;
             }
 
-            // Q4 (5点満点・部分点あり)
-            let q4Ans = getAns('q4');
-            let q4Proc = getProc('q4');
-            let q4Score = 0;
-            
-            // どちらかに記述があれば最低1点
-            if (q4Ans.trim() !== "" || q4Proc.trim() !== "") {
-                q4Score = 1;
+            // ② 途中式が 7²（=49）まで到達していれば1点
+            // 「49」だけでは、7²に到達した根拠が見えないため加点しない
+            if (
+                containsAny(q4Proc, ['7^2', '7²', '7*7', '7×7']) ||
+                (containsAny(q4Proc, ['7']) && containsAny(q4Proc, ['49']) && containsAny(q4Proc, ['^2', '²', '*7', '×7']))
+            ) {
+                q4Score += 1;
+            }
 
-                // 途中式にピタゴラスの定理の思考跡があれば＋1点
-                if (checkAnswer(q4Proc, ["7^2"]) || checkAnswer(q4Proc, ["7*7"]) || checkAnswer(q4Proc, ["7²"]) || checkAnswer(q4Proc, ["49"])) {
+            // ③ 答え部分は3点：数値49で2点、単位cm²まで書けてさらに1点
+            // （単位も採点対象という既存ルールを維持）
+            if (checkAnswer(q4Ans, ['49'])) {
+                q4Score += 2;
+                if (hasUnit(q4Ans, 'cm²')) {
                     q4Score += 1;
                 }
-
-                // 数値49が正しければ＋2点
-                if (checkAnswer(q4Ans, ["49"])) {
-                    q4Score += 2;
-
-                    // 単位cm²まで自分で書けていれば＋1点
-                    if (hasUnit(q4Ans, "cm²")) {
-                        q4Score += 1;
-                    }
-                }
             }
-            
-            totalScore += q4Score;
 
-            // Q4のマーク付け
-            if (q4Score === 5) { setMark('mark_q4', 'correct', '◯'); }
-            else if (q4Score > 0) { setMark('mark_q4', 'partial', '△'); }
-            else { setMark('mark_q4', 'incorrect', '✕'); }
+            totalScore += q4Score;
+            setScoredMark('mark_q4', q4Score, 5);
 
             // 合計点表示
             document.getElementById('scoreDisplay').textContent = totalScore;
