@@ -8,7 +8,6 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
         :root {
             --test-paper-bg: #ffffff;
@@ -195,10 +194,8 @@
             resize: vertical;
         }
 
-        .question-image {
+        .question-image-container {
             margin: 15px 0;
-            max-width: 100%;
-            height: auto;
             display: block;
         }
 
@@ -341,8 +338,19 @@
                     図1を見て、次の問いに答えなさい。<br>
                     ※ 面積を求めるための考え方・計算過程も採点します。途中式や考え方を解答欄に残しなさい。<br>
                     
-                    <!-- 指定された画像ファイル名を表示（GitHubの同じ場所に画像をアップロードしてください） -->
-                    <img src="スクリーンショット 2026-08-19 14.41.13.png" alt="図1" class="question-image">
+                    <!-- リンク切れ防止のため、図形を直接コードで描画しています -->
+                    <div class="question-image-container">
+                        <svg width="260" height="130" viewBox="0 0 260 130" xmlns="http://www.w3.org/2000/svg">
+                            <!-- 左の正方形 (紫色) -->
+                            <rect x="10" y="10" width="110" height="110" fill="#c4b5fd" stroke="#000000" stroke-width="2"/>
+                            <!-- 右の正方形 (緑色) -->
+                            <rect x="120" y="10" width="110" height="110" fill="#bbf7d0" stroke="#000000" stroke-width="2"/>
+                            <!-- 斜めの線 -->
+                            <line x1="10" y1="120" x2="120" y2="10" stroke="#000000" stroke-width="2"/>
+                            <!-- 7cmのテキスト -->
+                            <text x="75" y="75" font-family="'Noto Serif JP', serif" font-size="20" font-weight="bold" fill="#000000" text-anchor="middle">7cm</text>
+                        </svg>
+                    </div>
                     
                     図1<br><br>
                     (1) 図1の2つの正方形の面積の合計を求めなさい。 （5点）
@@ -354,7 +362,7 @@
             </div>
 
             <div class="submit-container">
-                <!-- 「→」ボタンに変更 -->
+                <!-- 「→」ボタン -->
                 <button type="button" class="submit-btn" id="submitBtn" onclick="gradeJukuTest()">
                     提出する →
                 </button>
