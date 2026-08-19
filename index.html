@@ -203,12 +203,30 @@
         .mark-badge.partial {
             color: var(--stamp-orange);
             display: block;
-            font-size: 2.5rem;
+            font-size: 2.2rem;
             top: -10px;
             border: 3px solid var(--stamp-orange);
             border-radius: 50%;
             padding: 2px 10px;
-            background: rgba(255, 255, 255, 0.85);
+            background: rgba(255, 255, 255, 0.9);
+        }
+
+        /* 図形挿入エリア */
+        .diagram-container {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+
+        .diagram-svg {
+            width: 180px;
+            height: 150px;
+            background: #fff;
+            border: 1px dashed #aaa;
+            padding: 5px;
+            border-radius: 4px;
         }
 
         /* 解答エリア */
@@ -234,8 +252,8 @@
 
         .answer-textarea {
             width: 100%;
-            max-width: 500px;
-            height: 90px;
+            max-width: 520px;
+            height: 95px;
             border: 1px solid #555;
             padding: 8px;
             font-size: 1rem;
@@ -405,7 +423,7 @@
                 <div class="mark-badge" id="mark_q1_3"></div>
                 <div class="question-head">
                     <span class="question-num">(3)</span>
-                    2(3x - 4) - 5(x - 1) を計算して簡単にしなさい。
+                    2(3x - 4) - 5(x - 1) を計算して簡単にした式を求めなさい。
                 </div>
                 <div class="answer-area">
                     答え： <input type="text" class="answer-input" name="q1_3" placeholder="例: x-3">
@@ -422,7 +440,7 @@
                 <div class="mark-badge" id="mark_q2_1"></div>
                 <div class="question-head">
                     <span class="question-num">(1)</span>
-                    √12 + √27 を計算して簡単にしなさい。
+                    √12 + √27 を計算して簡単にした値を求めなさい。
                 </div>
                 <div class="answer-area">
                     答え： <input type="text" class="answer-input" name="q2_1" placeholder="例: 5√3">
@@ -434,7 +452,7 @@
                 <div class="mark-badge" id="mark_q2_2"></div>
                 <div class="question-head">
                     <span class="question-num">(2)</span>
-                    √3(√21 - √3) を展開して計算しなさい。
+                    √3(√21 - √3) を展開して計算した値を求めなさい。
                 </div>
                 <div class="answer-area">
                     答え： <input type="text" class="answer-input" name="q2_2" placeholder="例: 3√7-3">
@@ -468,8 +486,26 @@
                 <div class="mark-badge" id="mark_q4"></div>
                 <div class="question-head">
                     <span class="question-num">問</span>
-                    斜辺の長さが 7cm である直角二等辺三角形があります。この直角二等辺三角形の1辺の長さを求めなさい。（考え方や途中式も含めて入力しなさい）
+                    右の図のような斜辺の長さが 7cm である直角二等辺三角形があります。この直角二等辺三角形の1辺の長さを求めなさい。（考え方や途中式も含めて入力しなさい）
                 </div>
+
+                <!-- 図形（SVG） -->
+                <div class="diagram-container">
+                    <svg class="diagram-svg" viewBox="0 0 200 160">
+                        <!-- 直角二等辺三角形 -->
+                        <polygon points="30,130 170,130 30,20" fill="none" stroke="#1a1a1a" stroke-width="2.5" stroke-linejoin="round" />
+                        <!-- 直角マーク -->
+                        <path d="M 30,115 L 45,115 L 45,130" fill="none" stroke="#1a1a1a" stroke-width="1.8" />
+                        <!-- 辺の長さラベル -->
+                        <text x="110" y="68" font-size="14" font-weight="bold" fill="#1a1a1a" transform="rotate(-38 110 68)">7 cm</text>
+                        <text x="12" y="80" font-size="13" fill="#444">x</text>
+                        <text x="95" y="148" font-size="13" fill="#444">x</text>
+                        <!-- 相同マーク (等辺記号) -->
+                        <line x1="25" y1="73" x2="35" y2="77" stroke="#1a1a1a" stroke-width="1.5" />
+                        <line x1="98" y1="125" x2="102" y2="135" stroke="#1a1a1a" stroke-width="1.5" />
+                    </svg>
+                </div>
+
                 <div class="answer-area">
                     <textarea class="answer-textarea" name="q4" placeholder="途中式や考え方、最終解答を入力..."></textarea>
                     <div class="sub-note">※途中式・考え方に応じて最大5点まで加点されます。</div>
@@ -560,8 +596,8 @@
 
             // --- 大問4 部分点付き採点 (最大5点) ---
             // 条件：
-            // 1. なにか書いてあるだけで 1点
-            // 2. 「7^2」や「7²」や「49」まで到達していれば 2点
+            // 1. 何か書いてあれば 1点
+            // 2. 「7^2」や「7²」や「49」までの思考過程があれば 2点
             // 3. 最終的な正解（7√2/2 や 7/√2 など）に到達していれば 5点満点
             const rawQ4 = document.querySelector('textarea[name="q4"]').value;
             const normQ4 = normalizeText(rawQ4);
@@ -575,10 +611,10 @@
                     scoreQ4 = 2;
                 }
 
-                // 最終的な正解チェック (例: 7√2/2, 7/route2, 3.5√2 など)
+                // 最終的な正解チェック
                 if (
                     normQ4.includes("7√2/2") || 
-                    normQ4.includes("7/[38;5;1m√2[0m") || 
+                    normQ4.includes("7/√2") || 
                     normQ4.includes("7/root2") || 
                     normQ4.includes("7√2÷2") ||
                     normQ4.includes("3.5√2") ||
