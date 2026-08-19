@@ -206,10 +206,20 @@
             align-items: center;
             gap: 10px;
             font-weight: bold;
+            width: 100%;
+        }
+
+        .answer-label {
+            white-space: nowrap;
+            flex: 0 0 auto;
         }
 
         .final-answer input[type="text"] {
             width: 180px;
+            max-width: 100%;
+            flex: 1 1 180px;
+            min-width: 0;
+            box-sizing: border-box;
             height: 40px;
             border: 2px solid #555; /* 答えの枠は少し太く */
             text-align: center;
@@ -262,9 +272,83 @@
 
         @media (max-width: 600px) {
             .test-sheet { padding: 25px 15px; }
-            .info-table td { display: inline-block; width: 50%; box-sizing: border-box; }
-            .info-table td:nth-child(3) { width: 100%; }
-            .info-table td:nth-child(4) { width: 100%; text-align: center; }
+            .top-meta {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 6px;
+                font-size: 0.9rem;
+                margin-bottom: 18px;
+            }
+            .main-title h1 {
+                font-size: 2rem;
+                letter-spacing: 1px;
+            }
+            .sub-title {
+                font-size: 0.85rem;
+            }
+            .info-table {
+                border-collapse: separate;
+                border-spacing: 0;
+            }
+            .info-table tbody {
+                display: block;
+                width: 100%;
+            }
+            .info-table tr {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                width: 100%;
+            }
+            .info-table td {
+                display: block;
+                width: auto !important;
+                float: none !important;
+                clear: none !important;
+                box-sizing: border-box;
+                padding: 10px 12px;
+                border: 0;
+            }
+            .info-table td:nth-child(1) {
+                border-right: 1px solid var(--border-color);
+                border-bottom: 1px solid var(--border-color);
+            }
+            .info-table td:nth-child(2) {
+                border-bottom: 1px solid var(--border-color);
+            }
+            .info-table td:nth-child(3) {
+                grid-column: 1 / -1;
+                border-bottom: 1px solid var(--border-color);
+            }
+            .info-table td:nth-child(4) {
+                grid-column: 1 / -1;
+            }
+            .info-table label {
+                display: inline-block;
+                min-width: 2.8em;
+            }
+            .info-table input[type="text"] {
+                width: calc(100% - 4.2em);
+                min-width: 0;
+            }
+            .score-cell {
+                text-align: center;
+                padding-top: 14px;
+                padding-bottom: 14px;
+            }
+            .answer-group {
+                margin-left: 0;
+            }
+            .process-area {
+                max-width: 100%;
+            }
+            .final-answer {
+                gap: 8px;
+            }
+            .final-answer input[type="text"] {
+                flex-basis: 0;
+                width: auto;
+                font-size: 1.05rem;
+            }
             .mark-badge { font-size: 4rem; top: -5px; }
         }
     </style>
@@ -313,7 +397,7 @@
                     <div class="question-text">（1） 7 − 3 × (−2)</div>
                     <div class="answer-group">
                         <textarea class="process-area" name="process_q1_1"></textarea>
-                        <div class="final-answer">答え： <input type="text" name="ans_q1_1"></div>
+                        <div class="final-answer"><span class="answer-label">答え：</span><input type="text" name="ans_q1_1"></div>
                     </div>
                 </div>
 
@@ -322,7 +406,7 @@
                     <div class="question-text">（2） −4/3 × 6/5</div>
                     <div class="answer-group">
                         <textarea class="process-area" name="process_q1_2"></textarea>
-                        <div class="final-answer">答え： <input type="text" name="ans_q1_2"></div>
+                        <div class="final-answer"><span class="answer-label">答え：</span><input type="text" name="ans_q1_2"></div>
                     </div>
                 </div>
 
@@ -331,7 +415,7 @@
                     <div class="question-text">（3） 2(3x − 4) − 5(x − 1) を簡単にしなさい。</div>
                     <div class="answer-group">
                         <textarea class="process-area" name="process_q1_3"></textarea>
-                        <div class="final-answer">答え： <input type="text" name="ans_q1_3"></div>
+                        <div class="final-answer"><span class="answer-label">答え：</span><input type="text" name="ans_q1_3"></div>
                     </div>
                 </div>
             </div>
@@ -346,7 +430,7 @@
                     <div class="question-text">（1） √12 ＋ √27 − √3</div>
                     <div class="answer-group">
                         <textarea class="process-area" name="process_q2_1"></textarea>
-                        <div class="final-answer">答え： <input type="text" name="ans_q2_1"></div>
+                        <div class="final-answer"><span class="answer-label">答え：</span><input type="text" name="ans_q2_1"></div>
                     </div>
                 </div>
 
@@ -355,7 +439,7 @@
                     <div class="question-text">（2） 1個のさいころを1回投げるとき、3の倍数が出る確率を求めなさい。</div>
                     <div class="answer-group">
                         <textarea class="process-area" name="process_q2_2"></textarea>
-                        <div class="final-answer">答え： <input type="text" name="ans_q2_2"></div>
+                        <div class="final-answer"><span class="answer-label">答え：</span><input type="text" name="ans_q2_2"></div>
                     </div>
                 </div>
 
@@ -364,7 +448,7 @@
                     <div class="question-text">（3） 1、2、3、4、5 の5個の数字から、異なる3個を選んで3桁の整数を作ります。このうち、3の倍数となる整数は何個ありますか。</div>
                     <div class="answer-group">
                         <textarea class="process-area large" name="process_q2_3"></textarea>
-                        <div class="final-answer">答え： <input type="text" name="ans_q2_3" aria-label="大問2の3の答え"></div>
+                        <div class="final-answer"><span class="answer-label">答え：</span><input type="text" name="ans_q2_3" aria-label="大問2の3の答え"></div>
                     </div>
                 </div>
             </div>
@@ -389,7 +473,7 @@
                     <div class="question-text">（2）ノート1冊、ペン1本の値段をそれぞれ求めなさい。 （1点）</div>
                     <div class="answer-group">
                         <textarea class="process-area" name="process_q3_2"></textarea>
-                        <div class="final-answer">答え： <input type="text" name="ans_q3_2" style="width: 380px;" aria-label="大問3の2の答え"></div>
+                        <div class="final-answer"><span class="answer-label">答え：</span><input type="text" name="ans_q3_2" style="width: 380px;" aria-label="大問3の2の答え"></div>
                     </div>
                 </div>
 
@@ -398,7 +482,7 @@
                     <div class="question-text">（3）ノート5冊とペン3本を買うと、代金はいくらになりますか。 （1点）</div>
                     <div class="answer-group">
                         <textarea class="process-area" name="process_q3_3"></textarea>
-                        <div class="final-answer">答え： <input type="text" name="ans_q3_3" aria-label="大問3の3の答え"></div>
+                        <div class="final-answer"><span class="answer-label">答え：</span><input type="text" name="ans_q3_3" aria-label="大問3の3の答え"></div>
                     </div>
                 </div>
             </div>
@@ -457,7 +541,7 @@
                     <div class="question-text">（1）図1の2つの正方形の面積の合計を求めなさい。 （5点）</div>
                     <div class="answer-group">
                         <textarea class="process-area large" name="process_q4"></textarea>
-                        <div class="final-answer">答え： <input type="text" name="ans_q4" aria-label="大問4の答え"></div>
+                        <div class="final-answer"><span class="answer-label">答え：</span><input type="text" name="ans_q4" aria-label="大問4の答え"></div>
                     </div>
                 </div>
             </div>
