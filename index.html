@@ -140,7 +140,7 @@
         }
 
         .question-block {
-            margin-bottom: 25px;
+            margin-bottom: 35px; /* 余白を少し広げました */
             position: relative;
             padding-left: 10px;
         }
@@ -153,6 +153,7 @@
             z-index: 1;
         }
 
+        /* 採点マークのスタイル */
         .mark-badge {
             position: absolute;
             top: -15px;
@@ -170,36 +171,55 @@
         .mark-badge.incorrect { color: #4a6fa5; display: block; }
         .mark-badge.partial { color: #2a9d8f; display: block; }
 
-        .answer-area {
+        /* 解答エリアのコンテナ（縦並びに変更） */
+        .answer-group {
             margin-left: 20px;
             display: flex;
-            align-items: flex-start;
-            gap: 10px;
+            flex-direction: column;
+            gap: 12px; /* 途中式と答えの間の隙間 */
             font-size: 1rem;
             position: relative;
             z-index: 2;
         }
 
-        /* 全ての解答欄をテキストエリアに */
-        .answer-textarea {
+        /* 途中式用の広いテキストエリア（広さを倍増） */
+        .process-area {
             width: 100%;
-            max-width: 450px;
-            height: 70px;
-            border: 1px solid #777;
-            padding: 8px;
+            max-width: 550px;
+            height: 140px; /* 倍の広さに変更 */
+            border: 1px solid #999;
+            padding: 10px;
             font-size: 1.05rem;
             outline: none;
             border-radius: 2px;
             resize: vertical;
-            background: #fffafa;
+            background: #fdfdfd;
         }
 
-        .answer-textarea.large {
-            height: 120px;
+        .process-area.large {
+            height: 200px; /* 大問4などはさらに広く */
+        }
+
+        /* 最終的な答えの入力欄 */
+        .final-answer {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: bold;
+        }
+
+        .final-answer input[type="text"] {
+            width: 180px;
+            height: 40px;
+            border: 2px solid #555; /* 答えの枠は少し太く */
+            text-align: center;
+            font-size: 1.2rem;
+            outline: none;
+            border-radius: 2px;
         }
 
         .question-image-container {
-            margin: 20px 0;
+            margin: 25px 0;
             display: block;
             text-align: center;
         }
@@ -277,24 +297,27 @@
                 <div class="question-block">
                     <div class="mark-badge" id="mark_q1_1"></div>
                     <div class="question-text">（1） 7 − 3 × (−2)</div>
-                    <div class="answer-area">
-                        <textarea class="answer-textarea" name="q1_1" placeholder="途中式と答え"></textarea>
+                    <div class="answer-group">
+                        <textarea class="process-area" name="process_q1_1" placeholder="ここに途中式を書く"></textarea>
+                        <div class="final-answer">答え： <input type="text" name="ans_q1_1"></div>
                     </div>
                 </div>
 
                 <div class="question-block">
                     <div class="mark-badge" id="mark_q1_2"></div>
                     <div class="question-text">（2） −4/3 × 6/5</div>
-                    <div class="answer-area">
-                        <textarea class="answer-textarea" name="q1_2" placeholder="途中式と答え"></textarea>
+                    <div class="answer-group">
+                        <textarea class="process-area" name="process_q1_2" placeholder="ここに途中式を書く"></textarea>
+                        <div class="final-answer">答え： <input type="text" name="ans_q1_2"></div>
                     </div>
                 </div>
 
                 <div class="question-block">
                     <div class="mark-badge" id="mark_q1_3"></div>
                     <div class="question-text">（3） 2(3x − 4) − 5(x − 1) を簡単にしなさい。</div>
-                    <div class="answer-area">
-                        <textarea class="answer-textarea" name="q1_3" placeholder="途中式と答え"></textarea>
+                    <div class="answer-group">
+                        <textarea class="process-area" name="process_q1_3" placeholder="ここに途中式を書く"></textarea>
+                        <div class="final-answer">答え： <input type="text" name="ans_q1_3"></div>
                     </div>
                 </div>
             </div>
@@ -307,24 +330,27 @@
                 <div class="question-block">
                     <div class="mark-badge" id="mark_q2_1"></div>
                     <div class="question-text">（1） √12 ＋ √27 − √3</div>
-                    <div class="answer-area">
-                        <textarea class="answer-textarea" name="q2_1" placeholder="途中式と答え (ルートは「√」をコピペして使ってね)"></textarea>
+                    <div class="answer-group">
+                        <textarea class="process-area" name="process_q2_1" placeholder="ここに途中式を書く (ルートは「√」をコピペして使ってね)"></textarea>
+                        <div class="final-answer">答え： <input type="text" name="ans_q2_1"></div>
                     </div>
                 </div>
 
                 <div class="question-block">
                     <div class="mark-badge" id="mark_q2_2"></div>
                     <div class="question-text">（2） 1個のさいころを1回投げるとき、3の倍数が出る確率を求めなさい。</div>
-                    <div class="answer-area">
-                        <textarea class="answer-textarea" name="q2_2" placeholder="考え方と答え"></textarea>
+                    <div class="answer-group">
+                        <textarea class="process-area" name="process_q2_2" placeholder="ここに考え方を書く"></textarea>
+                        <div class="final-answer">答え： <input type="text" name="ans_q2_2"></div>
                     </div>
                 </div>
 
                 <div class="question-block">
                     <div class="mark-badge" id="mark_q2_3"></div>
                     <div class="question-text">（3） 1、2、3、4、5 の5個の数字から、異なる3個を選んで3桁の整数を作ります。このうち、3の倍数となる整数は何個ありますか。</div>
-                    <div class="answer-area">
-                        <textarea class="answer-textarea large" name="q2_3" placeholder="考え方と答え"></textarea>
+                    <div class="answer-group">
+                        <textarea class="process-area large" name="process_q2_3" placeholder="ここに考え方を書く"></textarea>
+                        <div class="final-answer">答え： <input type="text" name="ans_q2_3"> 個</div>
                     </div>
                 </div>
             </div>
@@ -339,24 +365,27 @@
                 <div class="question-block">
                     <div class="mark-badge" id="mark_q3_1"></div>
                     <div class="question-text">（1）ノート1冊の値段を x 円、ペン1本の値段を y 円として、連立方程式を作りなさい。 （1点）</div>
-                    <div class="answer-area">
-                        <textarea class="answer-textarea" name="q3_1" placeholder="式を2つ入力してください"></textarea>
+                    <div class="answer-group">
+                        <textarea class="process-area" name="process_q3_1" placeholder="考え方やメモがあれば書く"></textarea>
+                        <div class="final-answer">式： <input type="text" name="ans_q3_1" style="width: 250px;" placeholder="例: 3x+2y=560 など"></div>
                     </div>
                 </div>
 
                 <div class="question-block">
                     <div class="mark-badge" id="mark_q3_2"></div>
                     <div class="question-text">（2）ノート1冊、ペン1本の値段をそれぞれ求めなさい。 （1点）</div>
-                    <div class="answer-area">
-                        <textarea class="answer-textarea" name="q3_2" placeholder="途中式と答え"></textarea>
+                    <div class="answer-group">
+                        <textarea class="process-area" name="process_q3_2" placeholder="計算過程を書く"></textarea>
+                        <div class="final-answer">答え： <input type="text" name="ans_q3_2" style="width: 250px;" placeholder="例: ノート〇円、ペン〇円"></div>
                     </div>
                 </div>
 
                 <div class="question-block">
                     <div class="mark-badge" id="mark_q3_3"></div>
                     <div class="question-text">（3）ノート5冊とペン3本を買うと、代金はいくらになりますか。 （1点）</div>
-                    <div class="answer-area">
-                        <textarea class="answer-textarea" name="q3_3" placeholder="途中式と答え"></textarea>
+                    <div class="answer-group">
+                        <textarea class="process-area" name="process_q3_3" placeholder="計算過程を書く"></textarea>
+                        <div class="final-answer">答え： <input type="text" name="ans_q3_3"> 円</div>
                     </div>
                 </div>
             </div>
@@ -365,31 +394,41 @@
             <div class="question-section" style="border-bottom: none;">
                 <div class="section-title">【大問4】図形 （5点）</div>
                 
-                <div class="question-block">
-                    <div class="mark-badge" id="mark_q4"></div>
-                    <div class="question-text">
-                        図1を見て、次の問いに答えなさい。<br>
-                        ※ 面積を求めるための考え方・計算過程も採点します。途中式や考え方を解答欄に残しなさい。<br>
-                        
-                        <!-- スクリーンショットを忠実に再現したSVG描画コード -->
-                        <div class="question-image-container">
-                            <svg width="300" height="180" viewBox="0 0 300 180" xmlns="http://www.w3.org/2000/svg">
-                                <!-- 左側の正方形 (紫色) -->
-                                <rect x="40" y="80" width="80" height="80" fill="#c4b5fd" stroke="#000000" stroke-width="2"/>
-                                <!-- 右側の正方形 (緑色) - 左側の正方形より大きく、底辺が揃っている -->
-                                <rect x="120" y="20" width="140" height="140" fill="#bbf7d0" stroke="#000000" stroke-width="2"/>
-                                <!-- 斜めの線 (左の正方形の左下から、右の正方形の左上へ) -->
-                                <line x1="40" y1="160" x2="120" y2="20" stroke="#000000" stroke-width="2"/>
-                                <!-- 7cm のテキスト -->
-                                <text x="95" y="105" font-family="'Noto Serif JP', serif" font-size="22" font-weight="bold" fill="#000000" text-anchor="middle">7cm</text>
-                            </svg>
-                        </div>
-                        
-                        図1<br><br>
-                        （1）図1の2つの正方形の面積の合計を求めなさい。 （5点）
+                <div class="question-text">
+                    図1を見て、次の問いに答えなさい。<br>
+                    ※ 面積を求めるための考え方・計算過程も採点します。途中式や考え方を解答欄に残しなさい。<br>
+                    
+                    <!-- SVGを改良：線の強調、両端の黒丸、文字の背景を白くして視認性を劇的に向上 -->
+                    <div class="question-image-container">
+                        <svg width="300" height="180" viewBox="0 0 300 180" xmlns="http://www.w3.org/2000/svg">
+                            <!-- 左側の正方形 -->
+                            <rect x="40" y="80" width="80" height="80" fill="#c4b5fd" stroke="#000000" stroke-width="2"/>
+                            <!-- 右側の正方形 -->
+                            <rect x="120" y="20" width="140" height="140" fill="#bbf7d0" stroke="#000000" stroke-width="2"/>
+                            
+                            <!-- 斜めの線 (太めに) -->
+                            <line x1="40" y1="160" x2="120" y2="20" stroke="#000000" stroke-width="3"/>
+                            
+                            <!-- 線の両端に点（黒丸）を打って区間を明確にする -->
+                            <circle cx="40" cy="160" r="4" fill="#000000"/>
+                            <circle cx="120" cy="20" r="4" fill="#000000"/>
+                            
+                            <!-- 7cmの背景を白くして重なりを見やすくする -->
+                            <rect x="55" y="76" width="50" height="28" fill="#ffffff" fill-opacity="0.95" rx="4"/>
+                            <!-- 7cm のテキスト -->
+                            <text x="80" y="96" font-family="'Noto Serif JP', serif" font-size="20" font-weight="bold" fill="#000000" text-anchor="middle">7cm</text>
+                        </svg>
                     </div>
-                    <div class="answer-area">
-                        <textarea class="answer-textarea large" name="q4" placeholder="ここに考え方と答えを入力してください"></textarea>
+                    図1
+                </div>
+
+                <!-- 採点マークは設問(1)の横に移動しました -->
+                <div class="question-block" style="margin-top: 30px;">
+                    <div class="mark-badge" id="mark_q4"></div>
+                    <div class="question-text">（1）図1の2つの正方形の面積の合計を求めなさい。 （5点）</div>
+                    <div class="answer-group">
+                        <textarea class="process-area large" name="process_q4" placeholder="ここに考え方・計算過程を書く"></textarea>
+                        <div class="final-answer">答え： <input type="text" name="ans_q4"> cm²</div>
                     </div>
                 </div>
             </div>
@@ -408,58 +447,58 @@
         const today = new Date();
         document.getElementById('currentDate').textContent = `${today.getFullYear()}年${today.getMonth() + 1}月${today.getDate()}日`;
 
-        // 簡易採点用ヘルパー関数（全角半角・空白を無視してキーワードが含まれているかチェック）
+        // 簡易採点用ヘルパー関数（全角半角・空白を無視）
         function checkAnswer(input, keywords) {
+            if (!input) return false;
             let normalized = input.replace(/\s+/g, '').replace(/[Ａ-Ｚａ-ｚ０-９]/g, function(s) {
                 return String.fromCharCode(s.charCodeAt(0) - 0xFEE0);
             });
-            // 全てのキーワードが含まれていれば正解とみなす
             return keywords.every(kw => normalized.includes(kw));
         }
 
         function gradeJukuTest() {
             let totalScore = 0;
 
-            // Q1 (各2点)
-            let q1_1 = document.querySelector('textarea[name="q1_1"]').value;
-            if (checkAnswer(q1_1, ["13"])) { totalScore += 2; setMark('mark_q1_1', 'correct', '◯'); } else { setMark('mark_q1_1', 'incorrect', '✕'); }
+            // 各フィールドの値を取得する関数
+            const getAns = (name) => document.querySelector(`input[name="ans_${name}"]`).value;
+            const getProc = (name) => document.querySelector(`textarea[name="process_${name}"]`).value;
 
-            let q1_2 = document.querySelector('textarea[name="q1_2"]').value;
-            if (checkAnswer(q1_2, ["-8/5"]) || checkAnswer(q1_2, ["-1.6"])) { totalScore += 2; setMark('mark_q1_2', 'correct', '◯'); } else { setMark('mark_q1_2', 'incorrect', '✕'); }
-
-            let q1_3 = document.querySelector('textarea[name="q1_3"]').value;
-            if (checkAnswer(q1_3, ["x-3"])) { totalScore += 2; setMark('mark_q1_3', 'correct', '◯'); } else { setMark('mark_q1_3', 'incorrect', '✕'); }
+            // Q1 (各2点) - 「最終的な答え」欄のみで正誤判定
+            if (checkAnswer(getAns('q1_1'), ["13"])) { totalScore += 2; setMark('mark_q1_1', 'correct', '◯'); } else { setMark('mark_q1_1', 'incorrect', '✕'); }
+            if (checkAnswer(getAns('q1_2'), ["-8/5"]) || checkAnswer(getAns('q1_2'), ["-1.6"])) { totalScore += 2; setMark('mark_q1_2', 'correct', '◯'); } else { setMark('mark_q1_2', 'incorrect', '✕'); }
+            if (checkAnswer(getAns('q1_3'), ["x-3"])) { totalScore += 2; setMark('mark_q1_3', 'correct', '◯'); } else { setMark('mark_q1_3', 'incorrect', '✕'); }
 
             // Q2 (各2点)
-            let q2_1 = document.querySelector('textarea[name="q2_1"]').value;
-            if (checkAnswer(q2_1, ["4√3"]) || checkAnswer(q2_1, ["4r3"])) { totalScore += 2; setMark('mark_q2_1', 'correct', '◯'); } else { setMark('mark_q2_1', 'incorrect', '✕'); }
-
-            let q2_2 = document.querySelector('textarea[name="q2_2"]').value;
-            if (checkAnswer(q2_2, ["1/3"])) { totalScore += 2; setMark('mark_q2_2', 'correct', '◯'); } else { setMark('mark_q2_2', 'incorrect', '✕'); }
-
-            let q2_3 = document.querySelector('textarea[name="q2_3"]').value;
-            if (checkAnswer(q2_3, ["24"])) { totalScore += 2; setMark('mark_q2_3', 'correct', '◯'); } else { setMark('mark_q2_3', 'incorrect', '✕'); }
+            if (checkAnswer(getAns('q2_1'), ["4√3"]) || checkAnswer(getAns('q2_1'), ["4r3"])) { totalScore += 2; setMark('mark_q2_1', 'correct', '◯'); } else { setMark('mark_q2_1', 'incorrect', '✕'); }
+            if (checkAnswer(getAns('q2_2'), ["1/3"])) { totalScore += 2; setMark('mark_q2_2', 'correct', '◯'); } else { setMark('mark_q2_2', 'incorrect', '✕'); }
+            if (checkAnswer(getAns('q2_3'), ["24"])) { totalScore += 2; setMark('mark_q2_3', 'correct', '◯'); } else { setMark('mark_q2_3', 'incorrect', '✕'); }
 
             // Q3 (各1点)
-            let q3_1 = document.querySelector('textarea[name="q3_1"]').value;
-            if (checkAnswer(q3_1, ["3x", "2y", "560"]) || checkAnswer(q3_1, ["2x", "4y", "640"])) { totalScore += 1; setMark('mark_q3_1', 'correct', '◯'); } else { setMark('mark_q3_1', 'incorrect', '✕'); }
-
-            let q3_2 = document.querySelector('textarea[name="q3_2"]').value;
-            if (checkAnswer(q3_2, ["120"]) && checkAnswer(q3_2, ["100"])) { totalScore += 1; setMark('mark_q3_2', 'correct', '◯'); } else { setMark('mark_q3_2', 'incorrect', '✕'); }
-
-            let q3_3 = document.querySelector('textarea[name="q3_3"]').value;
-            if (checkAnswer(q3_3, ["900"])) { totalScore += 1; setMark('mark_q3_3', 'correct', '◯'); } else { setMark('mark_q3_3', 'incorrect', '✕'); }
+            if (checkAnswer(getAns('q3_1'), ["3x", "2y", "560"]) || checkAnswer(getAns('q3_1'), ["2x", "4y", "640"])) { totalScore += 1; setMark('mark_q3_1', 'correct', '◯'); } else { setMark('mark_q3_1', 'incorrect', '✕'); }
+            if (checkAnswer(getAns('q3_2'), ["120"]) && checkAnswer(getAns('q3_2'), ["100"])) { totalScore += 1; setMark('mark_q3_2', 'correct', '◯'); } else { setMark('mark_q3_2', 'incorrect', '✕'); }
+            if (checkAnswer(getAns('q3_3'), ["900"])) { totalScore += 1; setMark('mark_q3_3', 'correct', '◯'); } else { setMark('mark_q3_3', 'incorrect', '✕'); }
 
             // Q4 (5点満点・部分点あり)
-            let q4Input = document.querySelector('textarea[name="q4"]').value;
+            let q4Ans = getAns('q4');
+            let q4Proc = getProc('q4');
             let q4Score = 0;
-            if (q4Input.trim() !== "") {
-                q4Score = 1; // 記述があれば1点
-                if (checkAnswer(q4Input, ["7^2"]) || checkAnswer(q4Input, ["7*7"]) || checkAnswer(q4Input, ["7²"])) q4Score += 1;
-                if (checkAnswer(q4Input, ["49"])) q4Score = 5; // 正解があれば満点
+            
+            // どちらかに記述があれば最低1点
+            if (q4Ans.trim() !== "" || q4Proc.trim() !== "") {
+                q4Score = 1; 
+                // 途中式にピタゴラスの定理の思考跡があれば＋1点
+                if (checkAnswer(q4Proc, ["7^2"]) || checkAnswer(q4Proc, ["7*7"]) || checkAnswer(q4Proc, ["7²"]) || checkAnswer(q4Proc, ["49"])) {
+                    q4Score += 1;
+                }
+                // 「答え」欄が正解なら問答無用で満点
+                if (checkAnswer(q4Ans, ["49"])) {
+                    q4Score = 5; 
+                }
             }
             
             totalScore += q4Score;
+
+            // Q4のマーク付け
             if (q4Score === 5) { setMark('mark_q4', 'correct', '◯'); }
             else if (q4Score > 0) { setMark('mark_q4', 'partial', '△'); }
             else { setMark('mark_q4', 'incorrect', '✕'); }
